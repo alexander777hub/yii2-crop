@@ -10,7 +10,8 @@
             "email": "aleksandrpereselkov77@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
 
     "extra": {
         "bootstrap": "alexander777hub\\crop\\Bootstrap"
