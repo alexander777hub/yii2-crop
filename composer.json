@@ -1,0 +1,32 @@
+{
+    "name": "alexander777hub/yii2-crop",
+    "description": "Provides a way to create, save, update and crop images",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," crop"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander",
+            "email": "aleksandrpereselkov77@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+
+    "extra": {
+        "bootstrap": "alexander777hub\\crop\\Bootstrap"
+    },
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "alexander777hub\\crop\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../klisl/yii2-mytest"
+        }
+    ]
+}
