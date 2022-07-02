@@ -22,11 +22,6 @@
         "psr-4": {
             "alexander777hub\\crop\\": ""
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../klisl/yii2-mytest"
-        }
-    ]
+    }
+
 }
