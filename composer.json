@@ -6,15 +6,20 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alexander",
+            "name": "Alexander Pereselkov",
             "email": "aleksandrpereselkov77@gmail.com"
         }
     ],
     "minimum-stability": "stable",
+    "support": {
+        "source": "https://github.com/alexander777hub/yii2-crop",
+        "issues": "https://github.com/alexander777hub/yii2-crop/issues"
+    },
 
     "require": {
         "php": ">=7.4",
-        "yiisoft/yii2": "~2.0.0"
+        "yiisoft/yii2": "~2.0.0",
+        "yiisoft/yii2-bootstrap4": "~2.0.0"
     },
     "extra": {
         "bootstrap": "alexander777hub\\crop\\Bootstrap"
