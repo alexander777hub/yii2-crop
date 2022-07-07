@@ -25,7 +25,5 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
 
-```php
-<?= \alexander777hub\crop\AutoloadExample::widget(); ?>```
+php yii migrate --migrationPath=@alexander777hub/crop/migrations --interactive=0

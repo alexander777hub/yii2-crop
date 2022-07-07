@@ -26,10 +26,8 @@ class CropperAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/cropper.common.js',
-        'js/cropper.esm.js',
         'js/cropper.js',
-        'js/upload_photo.js',
+        'js/upload_photo.js'
 
     ];
 
@@ -39,6 +37,5 @@ class CropperAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-    public $jsOptions =
-        ['position' => \yii\web\View::POS_HEAD];
+  
 }

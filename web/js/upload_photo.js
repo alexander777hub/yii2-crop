@@ -1,12 +1,28 @@
 $(document).ready(function () {
+    var item = $(".carousel-inner").find('.carousel-item').first();
+    item.addClass('active');
+    $(".redo").on("click", function(e){
+        e.preventDefault();
+      var div =  $(this).parent();
+      var img = div.next().find('.img-fluid');
+      console.log(img, "IMG");
+      console.log(div, "DIV");
+      $("#icon").attr("src", img.attr('src'));
+      $("#link").val(' ');
+      $("#link").val(img.attr('src'));
+      $("#obj_id").val(' ');
+      console.log(img.attr('id'), "ID");
+      $("#photo_id").val(img.attr('id'));
+    });
     var cropper;
+    var controller_id;
     function destroy(){
         var data = { };
         data.file = $("#crop_icon").attr("src");
         var blob= new Blob([JSON.stringify(data)], {type : 'application/json; charset=UTF-8'});
         console.log("destroy");
         console.log(data);
-        navigator.sendBeacon("/photo/destroy", blob);
+        navigator.sendBeacon(controller_id + "/destroy", blob);
     }
 
     function initEvents() {
@@ -18,14 +34,15 @@ $(document).ready(function () {
             console.log($("#crop_icon").attr("src"), "SRC");
             destroy();
         });
-
+        controller_id = $("#controller_id").val();
+        console.log(controller_id, "CONTROLLER");
        $('.delete').on("click", function(){
            var form_data = new FormData();
            form_data.append('obj_id', $("#obj_id").val());
            form_data.append('file', $("#icon").attr('src'));
            form_data.append('type',$(".delete").attr('data-type'));
            $.ajax({
-               url        : "/photo/delete",
+               url        : controller_id + "/delete",
                cache      : false,
                contentType: false,
                processData: false,
@@ -34,6 +51,8 @@ $(document).ready(function () {
                type       : "post",
                success    : function (data) {
                    $("#icon").attr('src', "/uploads/profile/default.png");
+                   $("#link").val(' ');
+                   $("#photo_id").val(0);
 
                },
            });
@@ -69,7 +88,7 @@ $(document).ready(function () {
             form_data.append("type", $("#btn_upload").attr('data-type'));
             form_data.append("file", file_data, file_data["name"]);
             $.ajax({
-                url        : "/photo/upload",
+                url        : controller_id + "/upload",
                 cache      : false,
                 contentType: false,
                 processData: false,
@@ -150,11 +169,11 @@ $(document).ready(function () {
                 var type      = $("#btn_upload").attr('data-type');
                 form_data.append("upload_photo_id", $(".js-show-upload-icon").attr('data-id'));
                 form_data.append("upload_user_id", $("#upload_user_id").val());
-                form_data.append("obj_id", $("#obj_id").val());
+                form_data.append("obj_id", $("#photo_id").val());
                 form_data.append("type", type);
                 form_data.append("file", blob, $("#crop_icon").attr("src"));
                 $.ajax({
-                    url        : "/photo/crop",
+                    url        : controller_id + "/crop",
                     cache      : false,
                     contentType: false,
                     processData: false,
@@ -163,12 +182,14 @@ $(document).ready(function () {
                     type       : "post",
                     success    : function (data) {
                         console.log(data, "RES");
-                        $("#icon").attr('src', data.file);
+                        $("#icon").attr('src', data.filepath);
+                        $("#link").val(data.filepath);
+                        $("#photo_id").val(data.photo_id);
                         cropper.destroy();
                         $('.modal').modal('hide');
                         //$("#modal_photo_upload").removeClass("show");
                         $("#ppc-file-icon").val('');
-                        $('#profile-photo').val(data.file);
+                        //$('#profile-photo').val(data.file);
                         $("#ppc-file-icon").val(JSON.stringify(data.ppc_file));
                         $("#btn_upload").val('');
                         //  window.location.reload();
@@ -216,7 +237,7 @@ $(document).ready(function () {
                 form_data.append("file", blob, $("#crop_image").attr("src"));
 
                 $.ajax({
-                    url        : "/photo/crop",
+                    url        : controller_id + "/crop",
                     cache      : false,
                     contentType: false,
                     processData: false,

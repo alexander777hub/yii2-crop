@@ -10,19 +10,17 @@
             "email": "aleksandrpereselkov77@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "minimum-stability": "stable",
 
-    "extra": {
-        "bootstrap": "alexander777hub\\crop\\Bootstrap"
-    },
     "require": {
         "yiisoft/yii2": "~2.0.0"
+    },
+    "extra": {
+        "bootstrap": "alexander777hub\\crop\\Bootstrap"
     },
     "autoload": {
         "psr-4": {
             "alexander777hub\\crop\\": ""
         }
-    }
-
+    },
 }
