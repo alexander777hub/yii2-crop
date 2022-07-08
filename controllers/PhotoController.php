@@ -123,7 +123,7 @@ use alexander777hub\crop\models\PhotoEntity;
              \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
              return [
                  'status' => 'success',
-                 'code' => 301,
+                 'code' => 204,
              ];
          }
 
