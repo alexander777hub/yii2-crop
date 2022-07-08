@@ -16,7 +16,7 @@ php composer.phar require --prefer-dist alexander777hub/yii2-crop "*"
 or add
 
 ```
-"alexander777hub/yii2-crop": "*"
+ composer require alexander777hub/yii2-crop dev-main
 ```
 
 to the require section of your `composer.json` file.
