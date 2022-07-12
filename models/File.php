@@ -205,7 +205,7 @@ class File
         if (!file_exists($path_to_save . $filename)) {
             \Yii::error('Not allowed type ' . $mime_type, 'common');
             exit;
-           // unlink($path_to_save . $filename);раньше удалял теперь делаем из одного и того же файла
+            // unlink($path_to_save . $filename);раньше удалял теперь делаем из одного и того же файла
         }
         try {
             $fact_type = explode('/', $mime_type)[1];
@@ -276,35 +276,35 @@ class File
                 exit;
             }
             //$file = $_FILES['file']['tmp_name'];
-           /* if ($fact_type == 'png') {
-                if (file_exists($file)) {
-                    $image  = imagecreatefrompng($file);
-                    $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => 192, 'height' => 192]);
-                    $image2 = imagescale($image, 192, 192);
-                    if ($image2 !== FALSE) {
-                        imagepng($image2, $file);
-                        imagedestroy($image2);
-                    }
-                    imagedestroy($image);
-                } else {
-                    \Yii::error('File did not save', 'common');
-                    exit;
-                }
-            } else {
-                if (file_exists($path_to_save . $filename)) {
-                    $image  = imagecreatefrompng($file);
-                    $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => 192, 'height' => 192]);
-                    $image2 = imagescale($image, 192, 192);
-                    if ($image2 !== FALSE) {
-                        imagepng($image2, $file);
-                        imagedestroy($image2);
-                    }
-                    imagedestroy($image);
-                } else {
-                    \Yii::error('File did not save', 'common');
-                    exit;
-                }
-            } */
+            /* if ($fact_type == 'png') {
+                 if (file_exists($file)) {
+                     $image  = imagecreatefrompng($file);
+                     $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => 192, 'height' => 192]);
+                     $image2 = imagescale($image, 192, 192);
+                     if ($image2 !== FALSE) {
+                         imagepng($image2, $file);
+                         imagedestroy($image2);
+                     }
+                     imagedestroy($image);
+                 } else {
+                     \Yii::error('File did not save', 'common');
+                     exit;
+                 }
+             } else {
+                 if (file_exists($path_to_save . $filename)) {
+                     $image  = imagecreatefrompng($file);
+                     $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => 192, 'height' => 192]);
+                     $image2 = imagescale($image, 192, 192);
+                     if ($image2 !== FALSE) {
+                         imagepng($image2, $file);
+                         imagedestroy($image2);
+                     }
+                     imagedestroy($image);
+                 } else {
+                     \Yii::error('File did not save', 'common');
+                     exit;
+                 }
+             } */
             $hash = explode('.', $filename)[0];
             $name = $files['file']['name'];
         }
