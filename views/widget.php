@@ -43,7 +43,7 @@ use yii\helpers\Html;
             Добавить фото
         </button>
         <button type="button" data-id=<?= 0 ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-danger delete" data-target="#exampleModal">
-            Удалить
+            Очистить
         </button>
     </div>
     <div class="col-12 col-sm-6">
@@ -58,6 +58,7 @@ use yii\helpers\Html;
                     <div class="carousel-item">
                         <div class="card-body">
                             <button class="btn btn-danger redo">Редактировать</button>
+                            <button class="btn btn-danger rem">Удалить</button>
                         </div>
                         <div class="card">
                             <img class="img-fluid" id=<?= $photo->id  ?> class="d-block w-100" src=<?=  $photo->url   ?> alt="First slide">

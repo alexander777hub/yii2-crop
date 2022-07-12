@@ -3,17 +3,18 @@ $(document).ready(function () {
     item.addClass('active');
     $(".redo").on("click", function(e){
         e.preventDefault();
-      var div =  $(this).parent();
-      var img = div.next().find('.img-fluid');
-      console.log(img, "IMG");
-      console.log(div, "DIV");
-      $("#icon").attr("src", img.attr('src'));
-      $("#link").val(' ');
-      $("#link").val(img.attr('src'));
-      $("#obj_id").val(' ');
-      console.log(img.attr('id'), "ID");
-      $("#photo_id").val(img.attr('id'));
+        var div =  $(this).parent();
+        var img = div.next().find('.img-fluid');
+        console.log(img, "IMG");
+        console.log(div, "DIV");
+        $("#icon").attr("src", img.attr('src'));
+        $("#link").val(' ');
+        $("#link").val(img.attr('src'));
+        $("#obj_id").val(' ');
+        console.log(img.attr('id'), "ID");
+        $("#photo_id").val(img.attr('id'));
     });
+
     var cropper;
     var controller_id;
     function destroy(){
@@ -30,33 +31,58 @@ $(document).ready(function () {
             console.log($("#crop_icon").attr("src"), "SRC");
             destroy();
         });
-       $('#btn-close').on('click', function (e) {
+        $('#btn-close').on('click', function (e) {
             console.log($("#crop_icon").attr("src"), "SRC");
             destroy();
         });
         controller_id = $("#controller_id").val();
         console.log(controller_id, "CONTROLLER");
-       $('.delete').on("click", function(){
-           var form_data = new FormData();
-           form_data.append('obj_id', $("#obj_id").val());
-           form_data.append('file', $("#icon").attr('src'));
-           form_data.append('type',$(".delete").attr('data-type'));
-           $.ajax({
-               url        : controller_id + "/delete",
-               cache      : false,
-               contentType: false,
-               processData: false,
-               data       : form_data,
-               dataType   : "JSON",
-               type       : "post",
-               success    : function (data) {
-                   $("#icon").attr('src', "/uploads/profile/default.png");
-                   $("#link").val(' ');
-                   $("#photo_id").val(0);
+        $('.rem').on("click", function(e){
+            e.preventDefault();
+            var form_data = new FormData();
+            var div =  $(this).parent();
+            var img = div.next().find('.img-fluid');
+            var photo_id = img.attr('id');
+            var file = img.attr("src");
 
-               },
-           });
-       });
+            form_data.append('obj_id', photo_id);
+            form_data.append('file', file);
+            $.ajax({
+                url        : controller_id + "/remove",
+                cache      : false,
+                contentType: false,
+                processData: false,
+                data       : form_data,
+                dataType   : "JSON",
+                type       : "post",
+                success    : function (data) {
+                    $("#link").val(' ');
+                    $("#photo_id").val(0);
+                    console.log(div, "DIV");
+                    console.log(div.parent());
+                    var next = div.parent().next();
+                    var prev = div.parent().prev();
+                    console.log(prev.length, "L");
+                    div.parent().remove();
+                    if(prev.length == 0 && next.length == 0) {
+                        console.log(1);
+                    }
+                    if(prev.length != 0 && next.length == 0) {
+                        prev.addClass('active');
+                    }
+                    if(prev.length == 0 && next.length != 0) {
+                        console.log(3);
+                        next.addClass('active');
+                    }
+                    if(prev.length != 0 && next.length != 0) {
+                        next.addClass('active');
+                    }
+                    console.log(div.parent().next());
+                    console.log(div.parent().prev());
+                    alert("Фото было удалено");
+                },
+            });
+        });
 
         console.log("INIT EVENTS HERE");
         var upload_photo_id;
@@ -71,12 +97,12 @@ $(document).ready(function () {
             console.log($("#btn_upload").attr('data-type'));
             if ($("#btn_upload").attr('data-type') == 7) {
 
-                 upload_photo_id = $(".js-show-upload-icon").attr('data-id');
-                 console.log($(".js-show-upload-icon").attr('data-id'));
+                upload_photo_id = $(".js-show-upload-icon").attr('data-id');
+                console.log($(".js-show-upload-icon").attr('data-id'));
             }
 
             if ($("#btn_upload").attr('data-type') == 8) {
-                 upload_photo_id = $(".js-show-upload-image").attr('data-id');
+                upload_photo_id = $(".js-show-upload-image").attr('data-id');
             }
 
             console.log(upload_photo_id, "UF");
