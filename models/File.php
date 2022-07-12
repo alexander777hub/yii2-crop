@@ -330,10 +330,7 @@ class File
     public static function getDirectory($type)
     {
 
-        switch($type){
-            case self::TYPE_ICON:
-                $path = Yii::getAlias('@webroot') . '/uploads/profile/public/';
-        }
+        $path = Yii::getAlias('@webroot') . self::DIR_PUBLIC;
 
         if (!file_exists($path)) {
             mkdir($path, 0755);
