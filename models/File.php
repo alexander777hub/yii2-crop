@@ -327,7 +327,7 @@ class File
         return $result;
     }
 
-    public static function getDirectory($type)
+    public static function getDirectory()
     {
 
         $path = Yii::getAlias('@webroot') . self::DIR_PUBLIC;
