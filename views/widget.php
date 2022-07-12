@@ -25,6 +25,10 @@ use yii\helpers\Html;
 //$this->registerJsFile(  'yii2-crop/web/js/upload_photo.js?t=' . time(), ['depends' => [\alexander777hub\crop\assets\CropperAsset::className()]]);
 
 ?>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <style>
     .modal-body {
@@ -32,6 +36,23 @@ use yii\helpers\Html;
         padding: 0rem !important;
     }
 </style>
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $(".clear").on("click", function(e){
+            e.preventDefault();
+            var def = "<?= $widget->noPhotoImage   ?>";
+            console.log(def, "D");
+            var div =  $(this).parent();
+            $("#icon").attr("src", def);
+            $("#link").val(' ');
+            $("#obj_id").val(' ');
+            $("#photo_id").val(' ');
+        });
+
+
+    });
+
+</script>
 <div class="row">
     <div class="col-12 col-sm-6">
         <div class="bg-light js-upload-item" id="new_public_photo">
@@ -42,7 +63,7 @@ use yii\helpers\Html;
         <button  type="button" data-id=<?= 0 ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-primary js-show-upload-icon" data-toggle="modal" data-target="#exampleModal">
             Добавить фото
         </button>
-        <button type="button" data-id=<?= 0 ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-danger delete" data-target="#exampleModal">
+        <button type="button" data-id=<?= 0 ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-danger clear" data-target="#exampleModal">
             Очистить
         </button>
     </div>
