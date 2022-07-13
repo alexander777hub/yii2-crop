@@ -167,11 +167,13 @@ class File
     }
     public static function cropPhotoAdv(array $files, array $post)
     {
+        $width        = $post['width'];
+        $height       = $post['height'];
         $is_new_photo = false;
-        $photo_id = (int)$post['upload_photo_id'] ?? 0;
-        $type     = (int)$post['type'] ?? 0;
-        $obj_id   = (int)$post['obj_id'] ?? 0;
-        $size     = (int)$files['file']['size'];
+        $photo_id     = (int)$post['upload_photo_id'] ?? 0;
+        $type         = (int)$post['type'] ?? 0;
+        $obj_id       = (int)$post['obj_id'] ?? 0;
+        $size         = (int)$files['file']['size'];
         /*$profile     = Profile::find()->where(['user_id' => $obj_id])->one();
         if($profile){
             $is_new_photo = $profile->photo ? 0 : 1;
@@ -216,7 +218,7 @@ class File
             move_uploaded_file($files ['file'] ['tmp_name'],
                 $path_to_save . $filename);
             $f = Yii::getAlias('@webroot') .'/uploads/profile/saved/'. $files ['file'] ['name'];
-            if (file_exists(Yii::getAlias('@webroot') .'/uploads/profile/saved/'. $files ['file'] ['name'])) {
+            if (file_exists(Yii::getAlias('@webroot') .'/uploads/profile/saved/'. $files ['file'] ['name']) && $fact_type != 'png') {
                 unlink(Yii::getAlias('@webroot') .'/uploads/profile/saved/'. $files ['file'] ['name']);
             }
 
@@ -264,8 +266,8 @@ class File
             $file = $path_to_save . $filename;
             if (file_exists($file)) {
                 $image  = imagecreatefrompng($file);
-                $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => 192, 'height' => 192]);
-                $image2 = imagescale($image, 192, 192);
+                $image2 = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
+                $image2 = imagescale($image, $width, $height);
                 if ($image2 !== FALSE) {
                     imagepng($image2, $file);
                     imagedestroy($image2);

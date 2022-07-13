@@ -5,6 +5,7 @@ use alexander777hub\crop\models\File;
 use app\models\Profile;
 use Yii;
 use yii\db\Query;
+use yii\helpers\HtmlPurifier;
 use yii\helpers\Json;
 use yii\web\Controller;
 use alexander777hub\crop\models\PhotoEntity;
@@ -59,9 +60,14 @@ class PhotoController extends Controller
     public function actionCrop()
     {
         if (\Yii::$app->request->isAjax || \Yii::$app->request->isPost) {
+            $post = [];
+            $files = [];
+            foreach($_POST as $key=> $val){
+                $post[$key] = HtmlPurifier::process($val);
+            }
             if (isset($_FILES['file'])){
                 $photo_id = $_POST['obj_id'];
-                $result = File::cropPhotoAdv($_FILES, $_POST);
+                $result = File::cropPhotoAdv($_FILES, $post);
                 $path_to_save = $result['path_to_save'];
                 $filename = $result['filename'];
 

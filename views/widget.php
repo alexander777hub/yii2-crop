@@ -44,7 +44,7 @@ use yii\helpers\Html;
             console.log(def, "D");
             var div =  $(this).parent();
             $("#icon").attr("src", def);
-            $("#link").val(' ');
+            $("#link").val(def);
             $("#obj_id").val(' ');
             $("#photo_id").val(' ');
         });
@@ -127,6 +127,7 @@ use yii\helpers\Html;
                     <input type="hidden" id="controller_id" value="<?= $widget->controller_id ?>">
                     <input type="hidden" id="upload_user_id" value="<?= Yii::$app->user->id ?>">
                     <input type="hidden" id="obj_id" value=<?=  0 ?>>
+                    <input type="hidden" id="options" data-height="<?= $widget->height?>" data-width="<?= $widget->width?>">
                     <input type="hidden" id="type">
                     <input type="file" data-type=<?= \app\models\File::TYPE_ICON  ?>  id="btn_upload" accept="image/*" />
                 </div>

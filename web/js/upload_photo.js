@@ -1,5 +1,7 @@
 $(document).ready(function () {
     var item = $(".carousel-inner").find('.carousel-item').first();
+    var height = $("#options").attr("data-height");
+    var width  = $("#options").attr("data-width");
     item.addClass('active');
     $(".redo").on("click", function(e){
         e.preventDefault();
@@ -173,10 +175,12 @@ $(document).ready(function () {
         $("#crop_icon").attr("src", full_link);
         var image = document.getElementById("crop_icon");
         cropper   = new Cropper(image, {
-            aspectRatio       : NaN,
+            aspectRatio       : 1/1,
             InitialAspectRatio: NaN,
-            minCropBoxWidth   : 192,
-            minCropBoxHeight  : 192,
+            minCropBoxWidth   : width,
+            minCropBoxHeight  : height,
+            maxCropBoxWidth   : width,
+            maxCropBoxHeight  : height,
             viewMode: 1,
             crop(event) {
                 console.log(event.detail.x);
@@ -197,6 +201,8 @@ $(document).ready(function () {
                 form_data.append("upload_user_id", $("#upload_user_id").val());
                 form_data.append("obj_id", $("#photo_id").val());
                 form_data.append("type", type);
+                form_data.append("width", width);
+                form_data.append("height", height);
                 form_data.append("file", blob, $("#crop_icon").attr("src"));
                 $.ajax({
                     url        : controller_id + "/crop",
