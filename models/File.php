@@ -74,11 +74,6 @@ class File
         $hashname     = md5(microtime() . $filename);
         $filename_ext = $hashname . '.' . $ext;
         $path_to_save = Yii::getAlias('@webroot') . '/uploads/profile/saved/';
-        /*if (self::typeIsPublic($type)) {
-            $path_to_save = Yii::getAlias('@webroot') . '/uploads/profile/public/';
-        } else {
-            $path_to_save = Yii::getAlias('@webroot') . '/uploads/profile/private/';
-        } */
         if (file_exists($path_to_save . $filename_ext)) {
             unlink($path_to_save . $filename_ext);
         }
@@ -174,20 +169,6 @@ class File
         $type         = (int)$post['type'] ?? 0;
         $obj_id       = (int)$post['obj_id'] ?? 0;
         $size         = (int)$files['file']['size'];
-        /*$profile     = Profile::find()->where(['user_id' => $obj_id])->one();
-        if($profile){
-            $is_new_photo = $profile->photo ? 0 : 1;
-        }
-        if(!$is_new_photo){
-            $old_file = explode('/', $profile->photo)[5];
-            if ($old_file) {
-                $directory_to_delete = self::getDirectory($type, $obj_id);
-                $path_to_file_delete = $directory_to_delete . $old_file;
-                if ($path_to_file_delete && file_exists($path_to_file_delete)) {
-                    unlink($path_to_file_delete);
-                }
-            }
-        }*/
 
         $filename = $files['file']['name'];
         if (!isset($files['file']['type'])) {
@@ -202,13 +183,12 @@ class File
         }
         $e   = explode('.', $filename);
         $ext = end($e);
-        $path_to_save = self::getDirectory($type, $obj_id); // куда сохранить, было getDirectory но теперь надо чтоб не знал про папки
         $path_to_save = self::getPathToSaved();
         if (!file_exists($path_to_save . $filename)) {
             \Yii::error('Not allowed type ' . $mime_type, 'common');
             exit;
-            // unlink($path_to_save . $filename);раньше удалял теперь делаем из одного и того же файла
         }
+        unlink($path_to_save . $filename);
         try {
             $fact_type = explode('/', $mime_type)[1];
             if ($ext != $fact_type) {
