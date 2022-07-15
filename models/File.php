@@ -89,8 +89,8 @@ class File
             if ($ext == 'png') {
                 if (file_exists($path_to_save. $filename_ext)) {
                     $im  = imagecreatefrompng($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 400]);
-                    $im2 = imagescale($im, 400, 400);
+                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 500]);
+                    $im2 = imagescale($im, 400, 500);
                     if ($im2 !== FALSE) {
                         imagepng($im2, $path_to_save . $filename_ext);
                         imagedestroy($im2);
@@ -106,8 +106,8 @@ class File
                 if (file_exists($path_to_save . $filename_ext)) {
 
                     $im  = imagecreatefromjpeg($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 400]);
-                    $im2 = imagescale($im, 400, 400);
+                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 500]);
+                    $im2 = imagescale($im, 400, 500);
                     if ($im2 !== FALSE) {
                         imagejpeg($im2, $path_to_save . $filename_ext);
                         imagedestroy($im2);
