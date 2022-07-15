@@ -174,7 +174,21 @@ $(document).ready(function () {
 
         $("#crop_icon").attr("src", full_link);
         var image = document.getElementById("crop_icon");
-        cropper   = new Cropper(image, {
+        cropper = new Cropper(image, {
+            aspectRatio: 3 / 4,
+            minCropBoxWidth: width,
+            minCropBoxHeight: height,
+            crop(event) {
+                console.log(event.detail.x);
+                console.log(event.detail.y);
+                console.log(event.detail.width);
+                console.log(event.detail.height);
+                console.log(event.detail.rotate);
+                console.log(event.detail.scaleX);
+                console.log(event.detail.scaleY);
+            },
+        });
+        /*cropper   = new Cropper(image, {
             aspectRatio       : NaN,
             InitialAspectRatio: NaN,
             minCropBoxWidth   : width,
@@ -189,7 +203,7 @@ $(document).ready(function () {
                 console.log(event.detail.scaleX);
                 console.log(event.detail.scaleY);
             },
-        });
+        }); */
 
         $("#btn_crop").on("click", function () {
             cropper.getCroppedCanvas().toBlob(function (blob) {
