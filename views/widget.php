@@ -56,7 +56,7 @@ use yii\helpers\Html;
 <div class="row">
     <div class="col-12 col-sm-6">
         <div class="bg-light js-upload-item" id="new_public_photo">
-            <img style="margin-bottom: 10px;" id="icon" src=<?= $model->{$widget->attribute} ? $model->{$widget->attribute} : $widget->noPhotoImage ?> >
+            <img  width=<?=  $widget->width ?> height=<?=  $widget->height ?> style="margin-bottom: 10px;" id="icon" src=<?= $model->{$widget->attribute} ? $model->{$widget->attribute} : $widget->noPhotoImage ?> >
 
             <!-- Button trigger modal -->
         </div>
