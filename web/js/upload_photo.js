@@ -175,7 +175,8 @@ $(document).ready(function () {
         $("#crop_icon").attr("src", full_link);
         var image = document.getElementById("crop_icon");
         cropper = new Cropper(image, {
-            aspectRatio: 3 / 4,
+            aspectRatio       : NaN,
+            InitialAspectRatio: NaN,
             minCropBoxWidth: width,
             minCropBoxHeight: height,
             crop(event) {
