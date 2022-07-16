@@ -9,10 +9,10 @@
       z-index: 10000;
   }
 
-#crop_image {
+#crop_icon {
     display: block;
 
     /* This rule is very important, please don't ignore this */
-    max-width: 100%;
+    max-width: 100% !important;
 
 }

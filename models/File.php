@@ -16,6 +16,7 @@ class File
 {
 
     public $path_to_save;
+    public const TYPE_FULL = 1;
     public const TYPE_ICON = 7;
     public const TYPE_IMAGE = 8;
     //public const DIR_SAVE = '/uploads/profile/saved/';
@@ -24,6 +25,7 @@ class File
     public const BINDED_MODEL = 'app\models\Profile';
     public const MODEL_ENTITY = 'alexander777hub\crop\models\PhotoEntity';
     public static $public_types = [
+        1 => 'full',
         7 => 'icon',
         8 => 'image',
     ];
@@ -73,10 +75,14 @@ class File
         $ext          = end($e);
         $hashname     = md5(microtime() . $filename);
         $filename_ext = $hashname . '.' . $ext;
-        $path_to_save = Yii::getAlias('@webroot') . '/uploads/profile/saved/';
+        $path_to_save = Yii::getAlias('@webroot') . '/uploads/profile/original/';
+        if (!file_exists($path_to_save)) {
+            mkdir($path_to_save, 0777);
+        }
         if (file_exists($path_to_save . $filename_ext)) {
             unlink($path_to_save . $filename_ext);
         }
+        $path_to_prev = Yii::getAlias('@webroot') . '/uploads/profile/saved/';
         try {
             if (is_uploaded_file($files ['file'] ['tmp_name'])) {
                 move_uploaded_file($files ['file'] ['tmp_name'],
@@ -85,76 +91,94 @@ class File
         } catch (Exception $error) {
             \Yii::error( 'Error:', $error->getMessage() . PHP_EOL, 'common');
         }
-        if  ($type === self::TYPE_ICON) {
-            if ($ext == 'png') {
-                if (file_exists($path_to_save. $filename_ext)) {
-                    $im  = imagecreatefrompng($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 500]);
-                    $im2 = imagescale($im, 400, 500);
-                    if ($im2 !== FALSE) {
-                        imagepng($im2, $path_to_save . $filename_ext);
-                        imagedestroy($im2);
-                    }
-                    imagedestroy($im);
-
-                } else {
-                    \Yii::error( 'File did not save', 'common');
-                    exit;
-                }
-
-            } else {
-                if (file_exists($path_to_save . $filename_ext)) {
-
-                    $im  = imagecreatefromjpeg($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 400, 'height' => 500]);
-                    $im2 = imagescale($im, 400, 500);
-                    if ($im2 !== FALSE) {
-                        imagejpeg($im2, $path_to_save . $filename_ext);
-                        imagedestroy($im2);
-                    }
-                    imagedestroy($im);
-                } else {
-                    \Yii::error( 'File did not save', 'common');
-                    exit;
-                }
-            }
+        if (!file_exists($path_to_save. $filename_ext)) {
+            \Yii::error( 'File did not save', 'common');
+            exit;
         }
-        if  ($type === self::TYPE_IMAGE) {
-            if ($ext == 'png') {
-                if (file_exists($path_to_save . $filename_ext)) {
-                    $im  = imagecreatefrompng($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 500, 'height' => 400]);
-                    $im2 = imagescale($im, 500, 400);
-                    if ($im2 !== FALSE) {
-                        imagepng($im2, $path_to_save . $filename_ext);
-                        imagedestroy($im2);
-                    }
-                    imagedestroy($im);
 
+        if ($ext == 'png') {
+            $image = imagecreatefrompng($path_to_save . $filename_ext);
+        } else {
+            $image = imagecreatefromjpeg($path_to_save . $filename_ext);
+        }
+
+        switch ($type) {
+            case self::TYPE_ICON:
+                $thumb_width = 300;
+                $thumb_height = 400;
+//        $thumb_height = 225;
+
+                $width = imagesx($image);
+                $height = imagesy($image);
+
+                $original_aspect = $width / $height;
+                $thumb_aspect = $thumb_width / $thumb_height;
+
+                if ($original_aspect >= $thumb_aspect) {
+                    // If image is wider than thumbnail (in aspect ratio sense)
+                    $new_height = $thumb_height;
+                    $new_width = $width / ($height / $thumb_height);
                 } else {
-                    \Yii::error( 'File did not save', 'common');
-                    exit;
+                    // If the thumbnail is wider than the image
+                    $new_width = $thumb_width;
+                    $new_height = $height / ($width / $thumb_width);
                 }
 
-            } else {
-                if (file_exists($path_to_save. $filename_ext)) {
+                $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 
-                    $im  = imagecreatefromjpeg($path_to_save . $filename_ext);
-                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => 500, 'height' => 400]);
-                    $im2 = imagescale($im, 500, 400);
-                    if ($im2 !== FALSE) {
-                        imagejpeg($im2, $path_to_save . $filename_ext);
-                        imagedestroy($im2);
-                    }
-                    imagedestroy($im);
+// Resize and crop
+                imagecopyresampled($thumb,
+                    $image,
+                    0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
+                    0 - ($new_height - $thumb_height) / 2, // Center the image vertically
+                    0, 0,
+                    $new_width, $new_height,
+                    $width, $height);
+                if ($ext == 'png') {
+                    imagepng($thumb, $path_to_prev . $filename_ext);
                 } else {
-                    \Yii::error( 'File did not save', 'common');
-                    exit;
+                    imagejpeg($thumb, $path_to_prev . $filename_ext, 80);
                 }
-            }
+            case self::TYPE_IMAGE:
+                $thumb_width = 600;
+                $thumb_height = 800;
+//        $thumb_height = 225;
+
+                $width = imagesx($image);
+                $height = imagesy($image);
+
+                $original_aspect = $width / $height;
+                $thumb_aspect = $thumb_width / $thumb_height;
+
+                if ($original_aspect >= $thumb_aspect) {
+                    // If image is wider than thumbnail (in aspect ratio sense)
+                    $new_height = $thumb_height;
+                    $new_width = $width / ($height / $thumb_height);
+                } else {
+                    // If the thumbnail is wider than the image
+                    $new_width = $thumb_width;
+                    $new_height = $height / ($width / $thumb_width);
+                }
+
+                $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+
+// Resize and crop
+                imagecopyresampled($thumb,
+                    $image,
+                    0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
+                    0 - ($new_height - $thumb_height) / 2, // Center the image vertically
+                    0, 0,
+                    $new_width, $new_height,
+                    $width, $height);
+                if ($ext == 'png') {
+                    imagepng($thumb, $path_to_prev . $filename_ext);
+                } else {
+                    imagejpeg($thumb, $path_to_prev . $filename_ext, 80);
+                }
         }
         $result                 = [];
         $result['path_to_save'] = $path_to_save;
+        $result['path_to_prev'] = $path_to_prev;
         $result['filename_ext'] = $filename_ext;
         $result['type']         = $type;
         $result['is_new_photo'] = $is_new_photo;

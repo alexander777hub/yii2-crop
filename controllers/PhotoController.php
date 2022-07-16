@@ -38,18 +38,20 @@ class PhotoController extends Controller
             if (isset($_FILES['file'])) {
                 $result       = $file->uploadPhotoAdv($_FILES, $_POST);
                 $path_to_save = $result['path_to_save'];
+                $path_to_prev = $result['path_to_prev'];
                 $filename_ext = $result['filename_ext'];
                 $type         = $result['type'];
                 $is_new_photo = $result['is_new_photo'];
 
                 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 $link_for_cropper            = explode('web',$path_to_save . $filename_ext)[1];
+                $link_for_cropper_prev            = explode('web',$path_to_prev . $filename_ext)[1];
 
                 return [
                     'result'       => 'success',
                     'id'           => 0,
                     'file_full'    =>  $link_for_cropper,
-                    'file_prev'    => $link_for_cropper,
+                    'file_prev'    => $link_for_cropper_prev,
                     'type'         => $type,
                     'is_new_photo' => $is_new_photo,
                 ];
