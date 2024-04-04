@@ -212,12 +212,16 @@ class File
         }
 
         $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+        $third = (int)(0 - ($new_width - $thumb_width) / 2);
+        $forth = (int)(0 - ($new_height - $thumb_height) / 2);
+        $new_height = (int)($new_height);
+        $new_width = (int)$new_width;
 
 // Resize and crop
         imagecopyresampled($thumb,
             $image,
-            0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
-            0 - ($new_height - $thumb_height) / 2, // Center the image vertically
+            $third, // Center the image horizontally
+            $forth, // Center the image vertically
             0, 0,
             $new_width, $new_height,
             $width, $height);
