@@ -7,7 +7,7 @@ $(document).ready(function () {
     $(".redo").on("click", function(e){
         e.preventDefault();
         var div =  $(this).parent();
-        var img = $(div.find(".js-upload-item").find("img"));
+        var img = $(div.find("img"));
         var id = img.attr('id');
         console.log(img, "IMG");
         console.log(div, "DIV");
@@ -45,7 +45,7 @@ $(document).ready(function () {
             e.preventDefault();
             var form_data = new FormData();
             var div =  $(this).parent();
-            var img = $(div.find(".js-upload-item").find("img"));
+            var img = $(div.find("img"));
             var photo_id = img.attr('id');
             var file = img.attr("src");
 
