@@ -235,12 +235,11 @@ class File
     {
         $width        = $post['width'];
         $height       = $post['height'];
-        $is_new_photo = false;
-        $photo_id     = (int)$post['upload_photo_id'] ?? 0;
+       // $photo_id     = (int)$post['upload_photo_id'] ?? 0;
         $type         = (int)$post['type'] ?? 0;
         $obj_id       = (int)$post['obj_id'] ?? 0;
         $size         = (int)$files['file']['size'];
-
+        $is_new_photo = $obj_id == 0 ? true : false;
         $filename = $files['file']['name'];
         if (!isset($files['file']['type'])) {
             \Yii::error('fatal error: no support type', 'common');

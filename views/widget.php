@@ -8,28 +8,21 @@
 
 use yii\helpers\Html;
 
-/* <?= Html::activeHiddenInput($model, $widget->attribute, ['class' => 'photo-field']); ?>
-    <?= Html::hiddenInput('width', $widget->width, ['class' => 'width-input']); ?>
-    <?= Html::hiddenInput('height', $widget->height, ['class' => 'height-input']); ?>
-    <?= Html::img(
-        $model->{$widget->attribute} != ''
-            ? $model->{$widget->attribute}
-            : $widget->noPhotoImage,
-        [
-            'style' => 'max-height: ' . $widget->thumbnailHeight . 'px; max-width: ' . $widget->thumbnailWidth . 'px',
-            'class' => 'thumbnail',
-            'data-no-photo' => $widget->noPhotoImage
-        ]
-    ); ?>*/
-
-//$this->registerJsFile(  'yii2-crop/web/js/upload_photo.js?t=' . time(), ['depends' => [\alexander777hub\crop\assets\CropperAsset::className()]]);
 
 ?>
 <script
+
         src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+
+
 <style>
     .modal-body {
 
@@ -48,18 +41,17 @@ use yii\helpers\Html;
             $("#obj_id").val(' ');
             $("#photo_id").val(' ');
         });
-
+        $('.swipebox').swipebox();
 
     });
 
-</script>
-<div class="row">
-    <div class="col-12 col-sm-6">
-        <div class="js-upload-item" id="new_public_photo">
-            <img  width=<?=  $widget->width ?> style="margin-bottom: 10px;" id="icon" src=<?= $model->{$widget->attribute} ? $model->{$widget->attribute} : $widget->noPhotoImage ?> >
 
-            <!-- Button trigger modbg-lightal -->
-        </div>
+</script>
+
+<div data-lightgallery="group" class="row row-12 row-x-12 d-md-flex flex-md-equal w-100">
+    <div class="col-xs-12 col-md-4 bg-light text-center overflow-hidden js-upload-item">
+        <img  width="<?=  $widget->width ?>" style="margin-bottom: 10px;" id="icon" src=<?= $model->{$widget->attribute} ? $model->{$widget->attribute} : $widget->noPhotoImage ?> >
+
         <button  type="button" data-id=<?= 0 ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-primary js-show-upload-icon" data-toggle="modal" data-target="#exampleModal">
             Добавить фото
         </button>
@@ -67,44 +59,22 @@ use yii\helpers\Html;
             Очистить
         </button>
     </div>
-    <div class="col-12 col-sm-6">
-        <div data-interval="false" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <?php foreach($widget->items->all() as $key=>$photo){ ?>
-                    <div class="carousel-item">
-                        <div class="card-body">
-                            <button class="btn btn-danger redo">Редактировать</button>
-                            <button class="btn btn-danger rem">Удалить</button>
-                        </div>
-                        <div class="card">
-                            <img class="img-fluid" id=<?= $photo->id  ?> class="d-block w-100" src=<?=  $photo->url   ?> alt="First slide">
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
+    <?php foreach($widget->items->all() as $key=>$photo){ ?>
+        <div class="col-xs-12 col-md-4 bg-light text-center overflow-hidden js-upload-item">
+            <a rel=<?=  'gallery-'. $model->id   ?> class="swipebox bg-dark box-shadow mx-auto" href="<?= $photo->url ?>" data-lightgallery="item" style="width: 100%; height: 400px; border-radius: 21px;">
+            <img style="margin-bottom: 10px;" id="<?= $photo->id  ?>" width="<?=  $widget->width ?>" class="thumbnail-light-image" src="<?= $photo->url  ?>" alt="">
             </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+            <button  type="button" data-id=<?= $photo->id ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-primary btn btn-danger redo" data-toggle="modal" data-target="#exampleModal">
+                Добавить фото
+            </button>
+            <button type="button" data-id=<?= $photo->id ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-danger rem" data-target="#exampleModal">
+                Удалить
+            </button>
         </div>
-    </div>
+
+    <?php } ?>
 
 </div>
-
-
-
-
-
-
 
 
 <!-- Modal -->
@@ -126,7 +96,7 @@ use yii\helpers\Html;
                     <input type="hidden" name="<?= $widget->parent_table . '[' . $widget->obj_id_field . ']'  ?>" value="<?= 0   ?>" id="photo_id">
                     <input type="hidden" id="controller_id" value="<?= $widget->controller_id ?>">
                     <input type="hidden" id="upload_user_id" value="<?= Yii::$app->user->id ?>">
-                    <input type="hidden" id="obj_id" value=<?=  0 ?>>
+                    <input type="hidden" id="obj_id" value=<?=  $model->id ?>>
                     <input type="hidden" id="options" data-height="<?= $widget->height?>" data-width="<?= $widget->width?>">
                     <input type="hidden" id="type">
                     <input type="file" data-type=<?= \app\models\File::TYPE_ICON  ?>  id="btn_upload" accept="image/*" />

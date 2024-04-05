@@ -19,7 +19,8 @@ class CropperAsset extends AssetBundle
      */
     public $css = [
         'css/cropper.css',
-        'css/photo_upload.css'
+        'css/photo_upload.css',
+        'gallery/src/css/swipebox.css'
     ];
 
     /**
@@ -27,7 +28,8 @@ class CropperAsset extends AssetBundle
      */
     public $js = [
         'js/cropper.js',
-        'js/upload_photo.js'
+        'js/upload_photo.js',
+        'gallery/src/js/jquery.swipebox.js'
 
     ];
 
@@ -37,5 +39,5 @@ class CropperAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-  
+
 }

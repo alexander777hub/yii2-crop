@@ -2,19 +2,21 @@ $(document).ready(function () {
     var item = $(".carousel-inner").find('.carousel-item').first();
     var height = $("#options").attr("data-height");
     var width  = $("#options").attr("data-width");
+    var isNoviBuilder = false;
     item.addClass('active');
     $(".redo").on("click", function(e){
         e.preventDefault();
         var div =  $(this).parent();
-        var img = div.next().find('.img-fluid');
+        var img = $(div.find(".js-upload-item").find("img"));
+        var id = img.attr('id');
         console.log(img, "IMG");
         console.log(div, "DIV");
-        $("#icon").attr("src", img.attr('src'));
+        // $("#icon").attr("src", img.attr('src'));
         $("#link").val(' ');
         $("#link").val(img.attr('src'));
-        $("#obj_id").val(' ');
+
         console.log(img.attr('id'), "ID");
-        $("#photo_id").val(img.attr('id'));
+        $("#photo_id").val(id);
     });
 
     var cropper;
@@ -43,7 +45,7 @@ $(document).ready(function () {
             e.preventDefault();
             var form_data = new FormData();
             var div =  $(this).parent();
-            var img = div.next().find('.img-fluid');
+            var img = $(div.find(".js-upload-item").find("img"));
             var photo_id = img.attr('id');
             var file = img.attr("src");
 
@@ -60,27 +62,9 @@ $(document).ready(function () {
                 success    : function (data) {
                     $("#link").val(' ');
                     $("#photo_id").val(0);
-                    console.log(div, "DIV");
-                    console.log(div.parent());
-                    var next = div.parent().next();
-                    var prev = div.parent().prev();
-                    console.log(prev.length, "L");
-                    div.parent().remove();
-                    if(prev.length == 0 && next.length == 0) {
-                        console.log(1);
-                    }
-                    if(prev.length != 0 && next.length == 0) {
-                        prev.addClass('active');
-                    }
-                    if(prev.length == 0 && next.length != 0) {
-                        console.log(3);
-                        next.addClass('active');
-                    }
-                    if(prev.length != 0 && next.length != 0) {
-                        next.addClass('active');
-                    }
-                    console.log(div.parent().next());
-                    console.log(div.parent().prev());
+
+                    div.remove();
+
                     alert("Фото было удалено");
                 },
             });
@@ -161,7 +145,11 @@ $(document).ready(function () {
             $("#crop_image").attr("src", "");
             $("#modal_photo_upload").addClass("show");
         });
+
     }
+
+
+
     function initCropperIcon(full_link, type) {
         $(".btn-secondary").on("click", function () {
             cropper.destroy();
@@ -176,7 +164,7 @@ $(document).ready(function () {
         var image = document.getElementById("crop_icon");
         cropper = new Cropper(image, {
             aspectRatio       : 3/4,
-           // InitialAspectRatio: NaN,
+            // InitialAspectRatio: NaN,
             minCropBoxWidth: width,
             minCropBoxHeight: height,
             crop(event) {
@@ -227,7 +215,15 @@ $(document).ready(function () {
                     type       : "post",
                     success    : function (data) {
                         console.log(data, "RES");
-                        $("#icon").attr('src', data.filepath);
+                        if (data.is_new_photo != false){
+                            $("#icon").attr('src', data.filepath);
+                        } else {
+
+                            var img = $("#" + data.photo_id);
+                            console.log("img?", img);
+                            img.attr("src", data.filepath);
+                        }
+
                         $("#link").val(data.filepath);
                         $("#photo_id").val(data.photo_id);
                         cropper.destroy();
