@@ -65,7 +65,7 @@ use yii\helpers\Html;
             <img style="margin-bottom: 10px;" id="<?= $photo->id  ?>" width="<?=  $widget->width ?>" class="thumbnail-light-image" src="<?= $photo->url  ?>" alt="">
             </a>
             <button  type="button" data-id=<?= $photo->id ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-primary btn btn-danger redo" data-toggle="modal" data-target="#exampleModal">
-                Добавить фото
+                Редактировать
             </button>
             <button type="button" data-id=<?= $photo->id ?> data-type=<?= \app\models\File::TYPE_ICON  ?> class="btn ml-3 mb-3 btn-danger rem" data-target="#exampleModal">
                 Удалить
